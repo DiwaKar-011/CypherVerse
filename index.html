@@ -1,3 +1,11 @@
+/* Still Spider-Man for about section */
+.about-spidey-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(230,57,70,0.8)) drop-shadow(0 0 80px rgba(230,57,70,0.4));
+  transform-origin: 50% 60%;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +24,9 @@
   --card-bg: #0f0f1a;
   --text: #f0f0f0;
   --accent: #ff2d55;
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-swift: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-boost: 1.22;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,6 +38,80 @@ body {
   color: var(--text);
   font-family: 'Rajdhani', sans-serif;
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body.loading {
+  overflow: hidden;
+}
+
+/* LOADER */
+#pageLoader {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(230,57,70,0.18), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(69,123,157,0.14), transparent 45%),
+    #09090e;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.48s var(--ease-swift), visibility 0.48s var(--ease-swift);
+}
+
+#pageLoader.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-core {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid rgba(230,57,70,0.15);
+  animation: pulseLoader 1.3s ease-in-out infinite;
+}
+
+.loader-core::before,
+.loader-core::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(230,57,70,0.75);
+}
+
+.loader-core::before {
+  animation: spinLoader 1.05s linear infinite;
+}
+
+.loader-core::after {
+  inset: 30px;
+  border-color: rgba(69,123,157,0.85);
+  animation: spinLoader 0.72s linear infinite reverse;
+}
+
+.loader-text {
+  margin-top: 18px;
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+}
+
+@keyframes spinLoader {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseLoader {
+  0%, 100% { box-shadow: 0 0 0 rgba(230,57,70,0.25); }
+  50% { box-shadow: 0 0 35px rgba(230,57,70,0.4); }
 }
 
 
@@ -104,6 +189,30 @@ nav {
     radial-gradient(ellipse at 50% 80%, rgba(155,28,28,0.1) 0%, transparent 50%);
 }
 
+.parallax-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.orb-a {
+  width: 180px;
+  height: 180px;
+  left: -50px;
+  top: 16%;
+  background: radial-gradient(circle at 30% 30%, rgba(230,57,70,0.3), rgba(230,57,70,0.02) 70%);
+}
+
+.orb-b {
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  bottom: 10%;
+  background: radial-gradient(circle at 40% 40%, rgba(69,123,157,0.28), rgba(69,123,157,0.04) 70%);
+}
+
 /* 3D SPIDER EMBLEM */
 .spider-emblem {
   position: absolute;
@@ -125,12 +234,6 @@ nav {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotate3d 12s linear infinite;
-}
-
-@keyframes rotate3d {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
 }
 
 .spider-svg-wrap {
@@ -142,12 +245,34 @@ nav {
   filter: drop-shadow(0 0 40px rgba(230,57,70,0.8)) drop-shadow(0 0 80px rgba(230,57,70,0.4));
 }
 
+.hero-spidey-img {
+  width: 125%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(12px) translateX(4px);
+  user-select: none;
+  pointer-events: none;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
   text-align: center;
   padding-top: 80px;
   max-width: 700px;
+}
+
+.motion-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.25s var(--ease-swift);
+  will-change: transform;
+}
+
+.motion-3d .hero-title,
+.motion-3d .hero-sub,
+.motion-3d .hero-btns {
+  transform: translateZ(12px);
 }
 
 .devhive-tag {
@@ -205,7 +330,7 @@ nav {
   align-items: center;
   gap: 16px;
   margin: 20px auto;
-  width: 400px;
+  width: min(400px, 100%);
   animation: fadeInUp 1s ease 0.6s both;
 }
 .hero-hr::before, .hero-hr::after {
@@ -267,6 +392,42 @@ nav {
 .btn-primary:hover::before { transform: translateX(150%) skew(-15deg); }
 .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(230,57,70,0.5); }
 
+.cta-beat {
+  animation: ctaBeat 2.2s var(--ease-swift) infinite;
+}
+
+.cta-beat::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1px solid rgba(230,57,70,0.55);
+  clip-path: inherit;
+  opacity: 0;
+  pointer-events: none;
+  animation: ctaRing 2.2s var(--ease-swift) infinite;
+}
+
+@keyframes ctaBeat {
+  0%, 100% { filter: brightness(1); }
+  45% { filter: brightness(1.08); }
+  58% { filter: brightness(1.16); }
+}
+
+@keyframes ctaRing {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  45% {
+    opacity: 0.48;
+    transform: scale(1.01);
+  }
+  62% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
 .btn-secondary {
   padding: 16px 44px;
   background: transparent;
@@ -327,8 +488,8 @@ nav {
 }
 
 .countdown-box {
-  width: 140px;
-  height: 140px;
+  width: clamp(96px, 18vw, 140px);
+  aspect-ratio: 1 / 1;
   background: var(--card-bg);
   border: 1px solid rgba(230,57,70,0.3);
   display: flex;
@@ -491,12 +652,15 @@ nav {
 }
 
 .track-card {
+  --tx: 0deg;
+  --ty: 0deg;
   padding: 40px 32px;
   background: var(--card-bg);
   border: 1px solid rgba(255,255,255,0.07);
   position: relative;
   overflow: hidden;
-  transition: all 0.4s;
+  transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty));
+  transition: transform 0.35s var(--ease-swift), border-color 0.35s var(--ease-swift), box-shadow 0.35s var(--ease-swift);
   cursor: default;
 }
 
@@ -522,7 +686,7 @@ nav {
 
 .track-card:hover::before { transform: scaleX(1); }
 .track-card:hover::after { opacity: 1; }
-.track-card:hover { transform: translateY(-8px); border-color: rgba(230,57,70,0.3); }
+.track-card:hover { transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty)) translateY(-8px); border-color: rgba(230,57,70,0.3); box-shadow: 0 22px 36px rgba(0,0,0,0.34); }
 
 .track-icon {
   font-size: 3rem;
@@ -581,20 +745,34 @@ nav {
   position: relative;
 }
 
-.timeline-item:nth-child(even) { flex-direction: row-reverse; }
+.timeline-item.reveal-left {
+  transform: translate3d(-110px, 0, 0) rotate(-1.2deg) scale(0.97);
+}
+
+.timeline-item.reveal-right {
+  transform: translate3d(110px, 0, 0) rotate(1.2deg) scale(0.97);
+}
+
+.timeline-item.reveal {
+  transition-duration: 0.82s;
+}
 
 .timeline-content {
+  --tx: 0deg;
+  --ty: 0deg;
   flex: 1;
   padding: 28px 32px;
   background: var(--card-bg);
   border: 1px solid rgba(230,57,70,0.15);
   position: relative;
-  transition: all 0.3s;
+  transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty));
+  transition: transform 0.3s var(--ease-swift), border-color 0.3s var(--ease-swift), box-shadow 0.3s var(--ease-swift);
 }
 
 .timeline-content:hover {
   border-color: rgba(230,57,70,0.5);
-  transform: translateY(-3px);
+  transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty)) translateY(-3px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.3);
 }
 
 .timeline-time {
@@ -628,7 +806,14 @@ nav {
   flex-shrink: 0;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0.65);
+  opacity: 0;
+  transition: transform 0.45s var(--ease-swift), opacity 0.35s var(--ease-swift);
+}
+
+.timeline-item.visible .timeline-dot {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
 }
 
 .timeline-spacer { flex: 1; }
@@ -652,19 +837,22 @@ nav {
 }
 
 .prize-card {
+  --tx: 0deg;
+  --ty: 0deg;
   padding: 50px 36px;
   background: var(--card-bg);
   border: 1px solid rgba(255,255,255,0.08);
   text-align: center;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s;
+  transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty));
+  transition: transform 0.35s var(--ease-swift), border-color 0.35s var(--ease-swift), box-shadow 0.35s var(--ease-swift);
   min-width: 260px;
 }
 
 .prize-card.gold {
   border-color: rgba(255,215,0,0.4);
-  transform: translateY(-20px);
+  transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty)) translateY(-20px);
 }
 .prize-card.silver { border-color: rgba(192,192,192,0.3); }
 .prize-card.bronze { border-color: rgba(205,127,50,0.3); }
@@ -789,6 +977,7 @@ nav {
   letter-spacing: 1px;
   outline: none;
   transition: all 0.3s;
+  appearance: none;
   -webkit-appearance: none;
 }
 
@@ -862,6 +1051,11 @@ nav {
 .submit-btn:hover::before { transform: translateX(100%); }
 .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(230,57,70,0.5); }
 
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
 /* SUCCESS STATE */
 .success-state {
   display: none;
@@ -906,12 +1100,33 @@ footer span { color: var(--red); }
 /* SCROLL REVEAL */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translate3d(0, 48px, 0) scale(0.96);
+  filter: blur(8px);
+  transition: opacity 0.68s var(--ease-swift), transform 0.68s var(--ease-swift), filter 0.68s var(--ease-swift);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
 }
+
+.reveal-up {
+  transform: translate3d(0, 48px, 0) scale(0.96);
+}
+
+.reveal-left {
+  transform: translate3d(-42px, 0, 0) scale(0.96);
+}
+
+.reveal-right {
+  transform: translate3d(42px, 0, 0) scale(0.96);
+}
+
+.reveal-zoom {
+  transform: scale(0.88);
+}
+
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
 }
 
 /* PARTICLES */
@@ -974,21 +1189,289 @@ footer span { color: var(--red); }
 @media (max-width: 900px) {
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
+  .nav-logo { font-size: 1.8rem; letter-spacing: 2px; }
   #hero { padding: 120px 24px 60px; }
   .spider-emblem { display: none; }
+  .hero-sub { font-size: 1rem; letter-spacing: 4px; }
+  .venue-text { letter-spacing: 2px; }
+  .hero-btns { flex-wrap: wrap; }
+  .btn-primary, .btn-secondary { padding: 14px 28px; letter-spacing: 2px; }
   .about-grid, .form-grid { grid-template-columns: 1fr; }
   .tracks-grid { grid-template-columns: 1fr; }
   #about, #tracks, #prizes, #register, #timeline { padding: 60px 24px; }
+  #countdown { padding: 60px 24px; }
+  .countdown-grid { gap: 18px; }
+  .countdown-sep { display: none; }
+  .countdown-num { font-size: 3.4rem; }
+  .section-title { font-size: 2.8rem; letter-spacing: 3px; }
   .prizes-grid { flex-direction: column; align-items: center; }
-  .prize-card.gold { transform: none; }
+  .prize-card.gold { transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty)); }
+  .timeline-item { gap: 22px; margin-bottom: 36px; }
   .reg-form-wrap { padding: 40px 28px; }
+  .submit-btn { letter-spacing: 2px; }
   .timeline-line { display: none; }
   .timeline-item, .timeline-item:nth-child(even) { flex-direction: column; }
   .timeline-dot { display: none; }
 }
+
+@media (max-width: 600px) {
+  nav {
+    padding: 14px 14px;
+    gap: 10px;
+  }
+
+  .nav-logo {
+    font-size: 1.45rem;
+    letter-spacing: 1.5px;
+  }
+
+  nav .btn-primary {
+    font-size: 0.58rem !important;
+    padding: 10px 14px !important;
+    letter-spacing: 1px;
+  }
+
+  #hero {
+    min-height: auto;
+    padding: 112px 14px 50px;
+  }
+
+  .hero-content {
+    padding-top: 20px;
+  }
+
+  .orb-a {
+    width: 120px;
+    height: 120px;
+  }
+
+  .orb-b {
+    width: 140px;
+    height: 140px;
+  }
+
+  .devhive-tag {
+    font-size: 0.66rem;
+    letter-spacing: 2.5px;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 17vw, 4.6rem);
+    letter-spacing: 1.8px;
+    line-height: 0.95;
+  }
+
+  .hero-sub {
+    font-size: 0.78rem;
+    letter-spacing: 2.2px;
+    margin: 12px 0 8px;
+  }
+
+  .hero-hr {
+    margin: 12px auto;
+  }
+
+  .venue-text {
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    margin: 8px 0 24px;
+  }
+
+  .hero-btns {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    padding: 13px 16px;
+  }
+
+  #countdown,
+  #about,
+  #tracks,
+  #prizes,
+  #register,
+  #timeline {
+    padding: 48px 14px;
+  }
+
+  .section-title {
+    font-size: 2.15rem;
+    letter-spacing: 2px;
+  }
+
+  .section-sub {
+    letter-spacing: 1.4px;
+    margin-bottom: 34px;
+  }
+
+  .countdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+    gap: 12px;
+  }
+
+  .countdown-item {
+    width: 100%;
+  }
+
+  .countdown-box {
+    width: 100%;
+    max-width: 126px;
+    margin: 0 auto;
+  }
+
+  .countdown-num {
+    font-size: clamp(2.7rem, 11vw, 3.2rem);
+  }
+
+  .countdown-label {
+    letter-spacing: 2px;
+  }
+
+  .about-text h2 {
+    font-size: 2.8rem;
+    margin-bottom: 18px;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .about-visual {
+    display: none;
+  }
+
+  .track-card {
+    padding: 30px 18px;
+  }
+
+  .track-card h3 {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .timeline-content {
+    padding: 18px 16px;
+  }
+
+  .timeline-item.reveal-left,
+  .timeline-item.reveal-right {
+    transform: translate3d(0, 32px, 0) scale(0.98);
+  }
+
+  .prize-card {
+    width: 100%;
+    min-width: 0;
+    padding: 38px 20px;
+  }
+
+  .form-title {
+    font-size: 2.2rem;
+    letter-spacing: 2.5px;
+  }
+
+  .form-subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 28px;
+  }
+
+  .reg-form-wrap {
+    padding: 26px 14px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-size: 0.64rem;
+    letter-spacing: 2px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+  }
+
+  .team-size-btns {
+    gap: 8px;
+  }
+
+  .size-btn {
+    padding: 12px 8px;
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    padding: 15px;
+    font-size: 0.83rem;
+    letter-spacing: 1.3px;
+  }
+
+  footer {
+    padding: 34px 14px;
+  }
+
+  footer .footer-logo {
+    font-size: 2.3rem;
+    letter-spacing: 3px;
+  }
+
+  footer p {
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .motion-3d,
+  .spider-emblem,
+  .web-3d,
+  .particle,
+  .loader-core,
+  .loader-core::before,
+  .loader-core::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .cta-beat,
+  .cta-beat::after {
+    animation: none !important;
+  }
+
+  .track-card,
+  .timeline-content,
+  .prize-card {
+    transform: none !important;
+  }
+}
 </style>
 </head>
-<body>
+<body class="loading">
+
+<div id="pageLoader" aria-hidden="true">
+  <div>
+    <div class="loader-core"></div>
+    <div class="loader-text">Booting CypherVerse</div>
+  </div>
+</div>
 
 <canvas id="webCanvas"></canvas>
 
@@ -1005,67 +1488,38 @@ footer span { color: var(--red); }
     <li><a href="#prizes">Prizes</a></li>
     <li><a href="#register">Register</a></li>
   </ul>
-  <a href="#register" class="btn-primary" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
+  <a href="#register" class="btn-primary cta-beat" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg" data-parallax="0.12"></div>
+  <div class="parallax-orb orb-a" data-parallax="0.2"></div>
+  <div class="parallax-orb orb-b" data-parallax="0.16"></div>
 
   <!-- 3D Spider Emblem -->
   <div class="spider-emblem">
     <div class="spider-3d">
       <div class="spider-svg-wrap">
-        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="320" height="320">
-          <!-- Spider web background -->
-          <g stroke="rgba(230,57,70,0.3)" stroke-width="0.8" fill="none">
-            <circle cx="150" cy="150" r="30"/>
-            <circle cx="150" cy="150" r="60"/>
-            <circle cx="150" cy="150" r="90"/>
-            <circle cx="150" cy="150" r="120"/>
-            <line x1="150" y1="30" x2="150" y2="270"/>
-            <line x1="30" y1="150" x2="270" y2="150"/>
-            <line x1="65" y1="65" x2="235" y2="235"/>
-            <line x1="235" y1="65" x2="65" y2="235"/>
-          </g>
-          <!-- Spider body -->
-          <ellipse cx="150" cy="170" rx="28" ry="36" fill="#e63946" opacity="0.9"/>
-          <ellipse cx="150" cy="128" rx="22" ry="24" fill="#e63946" opacity="0.95"/>
-          <!-- Spider head eyes -->
-          <ellipse cx="140" cy="120" rx="7" ry="9" fill="white" transform="rotate(-15,140,120)"/>
-          <ellipse cx="160" cy="120" rx="7" ry="9" fill="white" transform="rotate(15,160,120)"/>
-          <!-- Spider legs -->
-          <g stroke="#e63946" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85">
-            <path d="M 122 160 Q 90 140 60 120"/>
-            <path d="M 122 168 Q 85 162 50 160"/>
-            <path d="M 122 178 Q 88 185 58 200"/>
-            <path d="M 122 188 Q 90 210 70 240"/>
-            <path d="M 178 160 Q 210 140 240 120"/>
-            <path d="M 178 168 Q 215 162 250 160"/>
-            <path d="M 178 178 Q 212 185 242 200"/>
-            <path d="M 178 188 Q 210 210 230 240"/>
-          </g>
-          <!-- Web on body -->
-          <g stroke="rgba(0,0,0,0.3)" stroke-width="1" fill="none">
-            <path d="M 150 134 Q 165 150 150 166 Q 135 150 150 134"/>
-            <path d="M 130 150 Q 150 158 170 150"/>
-          </g>
-          <!-- Glow circles -->
-          <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(230,57,70,0.1)" stroke-width="2"/>
-          <circle cx="150" cy="150" r="145" fill="none" stroke="rgba(230,57,70,0.05)" stroke-width="1"/>
-        </svg>
+        <img
+          src="Miles_Morales_fanart___Spider-Man-removebg-preview.png"
+          alt="Spider-Man"
+          class="hero-spidey-img"
+          loading="eager"
+          decoding="async"
+        />
       </div>
     </div>
   </div>
 
-  <div class="hero-content">
+  <div class="hero-content motion-3d">
     <div class="devhive-tag">DevHive Club Presents</div>
     <h1 class="hero-title glitch" data-text="CYPHERVERSE">CYPHERVERSE</h1>
     <div class="hero-sub">24-HOUR HACKATHON</div>
     <div class="hero-hr"><span>◈</span></div>
     <div class="venue-text">Venue: <span>CGC University, Mohali</span></div>
     <div class="hero-btns">
-      <a href="#register" class="btn-primary">Register Now</a>
+      <a href="#register" class="btn-primary cta-beat">Register Now</a>
       <a href="#about" class="btn-secondary">Learn More</a>
     </div>
   </div>
@@ -1099,26 +1553,26 @@ footer span { color: var(--red); }
 </section>
 
 <!-- ABOUT -->
-<section id="about">
+<section id="about" data-parallax="0.035">
   <div class="about-grid">
     <div class="about-text reveal">
       <h2>ENTER THE<br><span>CYPHERVERSE</span></h2>
       <p>CypherVerse is not just a hackathon — it's a 24-hour descent into the multiverse of code, creativity, and chaos. Organized by DevHive Club at CGC University, Mohali, it's where the next generation of web-slingers forge their destiny.</p>
       <p>Build something that bends reality. Hack something that rewrites the rules. Leave something behind that the world will never forget.</p>
       <div class="stat-grid">
-        <div class="stat-card">
+        <div class="stat-card tilt-card">
           <div class="stat-num">24</div>
           <div class="stat-label">Hours of Hacking</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card tilt-card">
           <div class="stat-num">2–4</div>
           <div class="stat-label">Members per Team</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card tilt-card">
           <div class="stat-num">∞</div>
           <div class="stat-label">Possibilities</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card tilt-card">
           <div class="stat-num">CGC</div>
           <div class="stat-label">University, Mohali</div>
         </div>
@@ -1128,37 +1582,13 @@ footer span { color: var(--red); }
     <div class="about-visual reveal">
       <div class="web-3d-container">
         <div class="web-3d">
-          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="400" height="400">
-            <defs>
-              <radialGradient id="webGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(230,57,70,0.8)"/>
-                <stop offset="100%" stop-color="rgba(230,57,70,0)"/>
-              </radialGradient>
-            </defs>
-            <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(230,57,70,0.15)" stroke-width="1"/>
-            <g stroke="rgba(230,57,70,0.5)" stroke-width="1" fill="none">
-              <circle cx="200" cy="200" r="30"/>
-              <circle cx="200" cy="200" r="60"/>
-              <circle cx="200" cy="200" r="90"/>
-              <circle cx="200" cy="200" r="120"/>
-              <circle cx="200" cy="200" r="150"/>
-              <circle cx="200" cy="200" r="180"/>
-            </g>
-            <g stroke="rgba(230,57,70,0.4)" stroke-width="1.5" fill="none">
-              <line x1="200" y1="20" x2="200" y2="380"/>
-              <line x1="20" y1="200" x2="380" y2="200"/>
-              <line x1="74" y1="74" x2="326" y2="326"/>
-              <line x1="326" y1="74" x2="74" y2="326"/>
-              <line x1="39" y1="130" x2="361" y2="270"/>
-              <line x1="361" y1="130" x2="39" y2="270"/>
-              <line x1="130" y1="39" x2="270" y2="361"/>
-              <line x1="270" y1="39" x2="130" y2="361"/>
-            </g>
-            <!-- Center glow -->
-            <circle cx="200" cy="200" r="40" fill="url(#webGlow)" opacity="0.5"/>
-            <circle cx="200" cy="200" r="8" fill="#e63946" opacity="0.9"/>
-            <circle cx="200" cy="200" r="4" fill="white"/>
-          </svg>
+          <img 
+            src="download-removebg-preview.png" 
+            alt="Spider-Man"
+            class="about-spidey-img"
+            loading="eager"
+            decoding="async"
+          />
         </div>
       </div>
     </div>
@@ -1166,47 +1596,47 @@ footer span { color: var(--red); }
 </section>
 
 <!-- TRACKS -->
-<section id="tracks">
+<section id="tracks" data-parallax="0.028">
   <div class="section-title reveal">HACK TRACKS</div>
   <div class="section-sub reveal">Choose your multiverse</div>
   <div class="tracks-grid">
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">01</div>
       <span class="track-icon">🌐</span>
       <h3>Web & App Dev</h3>
       <p>Build next-gen web applications, PWAs, or mobile apps that solve real-world problems with cutting-edge tech stacks.</p>
     </div>
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">02</div>
       <span class="track-icon">🤖</span>
       <h3>AI / ML</h3>
       <p>Leverage machine learning, NLP, and computer vision to create intelligent solutions that push the limits of automation.</p>
     </div>
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">03</div>
       <span class="track-icon">🔗</span>
       <h3>Blockchain</h3>
       <p>Decentralize everything. Build DApps, smart contracts, and Web3 solutions that redefine trust and transparency.</p>
     </div>
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">04</div>
       <span class="track-icon">🔐</span>
       <h3>CyberSecurity</h3>
       <p>Hunt vulnerabilities, build defense systems, and craft ethical hacking tools that protect the digital universe.</p>
     </div>
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">05</div>
       <span class="track-icon">🏥</span>
       <h3>Social Impact</h3>
       <p>Create technology that matters — healthcare, education, sustainability, accessibility — tools that change lives.</p>
     </div>
 
-    <div class="track-card reveal">
+    <div class="track-card reveal tilt-card">
       <div class="track-num">06</div>
       <span class="track-icon">⚡</span>
       <h3>Open Innovation</h3>
@@ -1217,13 +1647,13 @@ footer span { color: var(--red); }
 </section>
 
 <!-- TIMELINE -->
-<section id="timeline">
+<section id="timeline" data-parallax="0.02">
   <div class="section-title reveal">24-HR SCHEDULE</div>
   <div class="section-sub reveal">The timeline of the verse</div>
   <div class="timeline-line"></div>
 
-  <div class="timeline-item reveal">
-    <div class="timeline-content">
+  <div class="timeline-item reveal reveal-left">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 1 — 09:00 AM</div>
       <h3>Registrations & Check-In</h3>
       <p>Teams arrive, register on-site, collect kits and get ready to enter the CypherVerse.</p>
@@ -1232,18 +1662,18 @@ footer span { color: var(--red); }
     <div class="timeline-spacer"></div>
   </div>
 
-  <div class="timeline-item reveal">
+  <div class="timeline-item reveal reveal-right">
     <div class="timeline-spacer"></div>
     <div class="timeline-dot"></div>
-    <div class="timeline-content">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 1 — 10:00 AM</div>
       <h3>Opening Ceremony</h3>
       <p>Welcome address by DevHive Club, track announcements, and problem statement reveal. Let the chaos begin.</p>
     </div>
   </div>
 
-  <div class="timeline-item reveal">
-    <div class="timeline-content">
+  <div class="timeline-item reveal reveal-left">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 1 — 11:00 AM</div>
       <h3>Hacking Begins 🚀</h3>
       <p>The 24-hour countdown starts. Teams dive into building their ideas from scratch.</p>
@@ -1252,18 +1682,18 @@ footer span { color: var(--red); }
     <div class="timeline-spacer"></div>
   </div>
 
-  <div class="timeline-item reveal">
+  <div class="timeline-item reveal reveal-right">
     <div class="timeline-spacer"></div>
     <div class="timeline-dot"></div>
-    <div class="timeline-content">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 1 — 02:00 PM</div>
       <h3>Mentor Sessions</h3>
       <p>Industry mentors circulate to guide teams, offer feedback, and help unblock creative challenges.</p>
     </div>
   </div>
 
-  <div class="timeline-item reveal">
-    <div class="timeline-content">
+  <div class="timeline-item reveal reveal-left">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 1 — 08:00 PM</div>
       <h3>Mid-Night Check-In</h3>
       <p>Mid-hack review, pizza, energy boosters, and mini-challenges to keep the energy alive.</p>
@@ -1272,18 +1702,18 @@ footer span { color: var(--red); }
     <div class="timeline-spacer"></div>
   </div>
 
-  <div class="timeline-item reveal">
+  <div class="timeline-item reveal reveal-right">
     <div class="timeline-spacer"></div>
     <div class="timeline-dot"></div>
-    <div class="timeline-content">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 2 — 10:00 AM</div>
       <h3>Submission Deadline</h3>
       <p>All projects must be submitted. Final 60 minutes of polishing, demos, and presentations prep.</p>
     </div>
   </div>
 
-  <div class="timeline-item reveal">
-    <div class="timeline-content">
+  <div class="timeline-item reveal reveal-left">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 2 — 11:00 AM</div>
       <h3>Judging & Demos</h3>
       <p>Teams present their builds to the panel. Live demos, Q&A, and the ultimate showdown begins.</p>
@@ -1292,10 +1722,10 @@ footer span { color: var(--red); }
     <div class="timeline-spacer"></div>
   </div>
 
-  <div class="timeline-item reveal">
+  <div class="timeline-item reveal reveal-right">
     <div class="timeline-spacer"></div>
     <div class="timeline-dot"></div>
-    <div class="timeline-content">
+    <div class="timeline-content tilt-card">
       <div class="timeline-time">Day 2 — 02:00 PM</div>
       <h3>Closing & Prize Distribution 🏆</h3>
       <p>Winners announced, prizes distributed, and the CypherVerse champions are crowned forever.</p>
@@ -1304,12 +1734,12 @@ footer span { color: var(--red); }
 </section>
 
 <!-- PRIZES -->
-<section id="prizes">
+<section id="prizes" data-parallax="0.024">
   <div class="section-title reveal">THE BOUNTY</div>
   <div class="section-sub reveal">For the greatest heroes of the verse</div>
   <div class="prizes-grid">
 
-    <div class="prize-card silver reveal">
+    <div class="prize-card silver reveal tilt-card">
       <span class="prize-medal">🥈</span>
       <div class="prize-place">2nd Place</div>
       <div class="prize-amount">₹15K</div>
@@ -1321,7 +1751,7 @@ footer span { color: var(--red); }
       </ul>
     </div>
 
-    <div class="prize-card gold reveal">
+    <div class="prize-card gold reveal tilt-card">
       <span class="prize-medal">🏆</span>
       <div class="prize-place">Grand Champion</div>
       <div class="prize-amount">₹30K</div>
@@ -1333,7 +1763,7 @@ footer span { color: var(--red); }
       </ul>
     </div>
 
-    <div class="prize-card bronze reveal">
+    <div class="prize-card bronze reveal tilt-card">
       <span class="prize-medal">🥉</span>
       <div class="prize-place">3rd Place</div>
       <div class="prize-amount">₹10K</div>
@@ -1348,11 +1778,11 @@ footer span { color: var(--red); }
 </section>
 
 <!-- REGISTRATION -->
-<section id="register">
+<section id="register" data-parallax="0.02">
   <div class="section-title reveal">JOIN THE VERSE</div>
   <div class="section-sub reveal">Register your team now</div>
 
-  <div class="reg-form-wrap reveal">
+  <div class="reg-form-wrap reveal motion-3d">
     <div id="formContainer">
       <div class="form-title">REGISTER</div>
       <div class="form-subtitle">DevHive Club — CGC University, Mohali</div>
@@ -1382,9 +1812,9 @@ footer span { color: var(--red); }
         <div class="form-group">
           <label>Team Size * (2–4 members)</label>
           <div class="team-size-btns">
-            <button type="button" class="size-btn" onclick="selectSize(2)">2</button>
-            <button type="button" class="size-btn" onclick="selectSize(3)">3</button>
-            <button type="button" class="size-btn" onclick="selectSize(4)">4</button>
+            <button type="button" class="size-btn" onclick="selectSize(2, this)">2</button>
+            <button type="button" class="size-btn" onclick="selectSize(3, this)">3</button>
+            <button type="button" class="size-btn" onclick="selectSize(4, this)">4</button>
           </div>
           <input type="hidden" id="teamSize" required/>
         </div>
@@ -1407,7 +1837,7 @@ footer span { color: var(--red); }
           <input type="text" id="college" placeholder="Your institution" required/>
         </div>
 
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn cta-beat">
           ⚡ ENTER THE CYPHERVERSE ⚡
         </button>
       </form>
@@ -1432,6 +1862,19 @@ footer span { color: var(--red); }
 // WEB CANVAS
 const canvas = document.getElementById('webCanvas');
 const ctx = canvas.getContext('2d');
+const isPhone = window.matchMedia('(max-width: 600px)').matches;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const parallaxIntensity = isPhone ? 0.9 : 1.28;
+
+// LOADER
+const pageLoader = document.getElementById('pageLoader');
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    pageLoader.classList.add('hide');
+    document.body.classList.remove('loading');
+  }, 360);
+});
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -1444,7 +1887,7 @@ let mouseX = -1000, mouseY = -1000;
 document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
 const nodes = [];
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < (isPhone ? 28 : 60); i++) {
   nodes.push({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -1503,7 +1946,7 @@ function createParticle() {
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 12000);
 }
-setInterval(createParticle, 300);
+setInterval(createParticle, isPhone ? 700 : 300);
 
 // COUNTDOWN
 const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
@@ -1524,23 +1967,99 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 // SCROLL REVEAL
-const reveals = document.querySelectorAll('.reveal');
+const reveals = [...document.querySelectorAll('.reveal')];
+const revealStyles = ['reveal-up', 'reveal-left', 'reveal-right', 'reveal-zoom'];
+
+reveals.forEach((el, index) => {
+  const hasVariant = revealStyles.some(v => el.classList.contains(v));
+  if (!hasVariant) {
+    el.classList.add(revealStyles[index % revealStyles.length]);
+  }
+  const groupedDelay = (index % 6) * 55;
+  el.style.setProperty('--reveal-delay', `${groupedDelay}ms`);
+});
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       e.target.classList.add('visible');
+      observer.unobserve(e.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
 reveals.forEach(r => observer.observe(r));
+
+// PARALLAX
+const parallaxElements = [...document.querySelectorAll('[data-parallax]')];
+
+function runParallax() {
+  if (prefersReducedMotion) return;
+  const scrollY = window.scrollY;
+  parallaxElements.forEach(el => {
+    const speed = Number(el.dataset.parallax) || 0.1;
+    el.style.transform = `translate3d(0, ${scrollY * speed * parallaxIntensity}px, 0)`;
+  });
+}
+
+window.addEventListener('scroll', () => {
+  requestAnimationFrame(runParallax);
+}, { passive: true });
+runParallax();
+
+// SUBTLE 3D MOTION
+const motionTargets = [
+  { el: document.querySelector('#hero .motion-3d'), intensity: isPhone ? 0 : 11 },
+  { el: document.querySelector('#register .motion-3d'), intensity: isPhone ? 0 : 7 }
+].filter(item => item.el);
+
+if (!prefersReducedMotion && canHover) {
+  window.addEventListener('mousemove', e => {
+    const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+    const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+
+    motionTargets.forEach(({ el, intensity }) => {
+      const rx = -ny * intensity;
+      const ry = nx * intensity;
+      el.style.transform = `perspective(1100px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+    });
+  });
+
+  window.addEventListener('mouseleave', () => {
+    motionTargets.forEach(({ el }) => {
+      el.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg)';
+    });
+  });
+}
+
+// CARD HOVER TILT
+const tiltCards = [...document.querySelectorAll('.tilt-card')];
+
+if (!prefersReducedMotion && canHover) {
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rx = (0.5 - y) * 9;
+      const ry = (x - 0.5) * 12;
+      card.style.setProperty('--tx', `${rx.toFixed(2)}deg`);
+      card.style.setProperty('--ty', `${ry.toFixed(2)}deg`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--tx', '0deg');
+      card.style.setProperty('--ty', '0deg');
+    });
+  });
+}
 
 // TEAM SIZE
 let selectedSize = null;
-function selectSize(n) {
+function selectSize(n, button) {
   selectedSize = n;
   document.getElementById('teamSize').value = n;
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if (button) button.classList.add('active');
 }
 
 // FORM SUBMIT
