@@ -191,6 +191,16 @@
       overflow: hidden;
     }
 
+    /* hero-inner: transparent on desktop, real block column on mobile */
+    .hero-inner {
+      display: contents;
+    }
+
+    /* Mobile-only Spider-Man image — hidden on desktop */
+    .hero-mobile-img {
+      display: none;
+    }
+
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -467,6 +477,15 @@
     /* Mobile-only Spider-Man — hidden on desktop */
     .hero-mobile-img {
       display: none;
+    }
+
+    /* On mobile the orbs are purely decorative and must not block layout */
+    @media (max-width: 900px) {
+      .parallax-orb {
+        position: absolute !important;
+        pointer-events: none;
+        z-index: 0 !important;
+      }
     }
 
     /* ===================== COUNTDOWN ===================== */
@@ -1207,59 +1226,54 @@
     @media (max-width: 900px) {
 
       /* --- NAV --- */
-      nav {
-        padding: 14px 20px;
-      }
+      nav { padding: 14px 20px; }
+      .nav-links { display: none !important; }
+      .nav-logo { font-size: 1.6rem; letter-spacing: 2px; }
 
-      /* HIDE nav links on tablet/mobile — only show logo + register btn */
-      .nav-links {
-        display: none !important;
-      }
-
-      .nav-logo {
-        font-size: 1.6rem;
-        letter-spacing: 2px;
-      }
-
-      /* --- HERO: centered column layout --- */
+      /* --- HERO: hero-inner becomes a real vertical flex column --- */
       #hero {
         min-height: 100svh;
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        padding: 0 24px 40px;
-        gap: 0;
+        padding: 0;
         overflow: hidden;
       }
 
-      /* Hide desktop spider emblem */
-      .spider-emblem {
-        display: none !important;
+      /* Activate hero-inner as a real block that stacks text + image */
+      .hero-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 500px;
+        padding: 90px 24px 40px;
+        position: relative;
+        z-index: 3;
       }
 
-      /* Text block: no extra top padding — hero itself centres everything */
+      /* hero-content fills width inside hero-inner */
       .hero-content {
-        padding-top: 60px; /* just clear the fixed nav */
         width: 100%;
-        max-width: 480px;
+        padding-top: 0;
         text-align: center;
         position: relative;
         z-index: 3;
-        order: 1;
       }
 
-      /* Mobile Spider-Man image below the text */
+      /* Hide desktop spider emblem */
+      .spider-emblem { display: none !important; }
+
+      /* Mobile Spider-Man sits directly below text — no position tricks */
       .hero-mobile-img {
         display: block !important;
-        order: 2;
-        width: 72%;
-        max-width: 300px;
+        position: static !important;
+        width: 68%;
+        max-width: 280px;
         margin: 16px auto 0;
         filter: drop-shadow(0 0 28px rgba(230, 57, 70, 0.75));
         animation: floatMobile 6s ease-in-out infinite;
-        position: relative;
-        z-index: 2;
       }
 
       @keyframes floatMobile {
@@ -1267,67 +1281,35 @@
         50% { transform: translateY(-14px); }
       }
 
-      .hero-sub {
-        font-size: 1rem;
-        letter-spacing: 4px;
-      }
-
+      .hero-sub { font-size: 1rem; letter-spacing: 4px; }
       .venue-text { letter-spacing: 2px; }
-
-      .hero-btns {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
+      .hero-btns { flex-wrap: wrap; justify-content: center; }
 
       .btn-primary,
-      .btn-secondary {
-        padding: 14px 28px;
-        letter-spacing: 2px;
-      }
+      .btn-secondary { padding: 14px 28px; letter-spacing: 2px; }
 
       /* --- LAYOUT --- */
-      .about-grid,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+      .about-grid, .form-grid { grid-template-columns: 1fr; }
+      .tracks-grid { grid-template-columns: 1fr 1fr; }
 
-      .tracks-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      #about, #tracks, #prizes, #register, #timeline {
-        padding: 60px 24px;
-      }
-
-      #countdown {
-        padding: 60px 24px;
-      }
+      #about, #tracks, #prizes, #register, #timeline { padding: 60px 24px; }
+      #countdown { padding: 60px 24px; }
 
       .countdown-grid { gap: 18px; }
       .countdown-sep { display: none; }
       .countdown-num { font-size: 3.4rem; }
-
       .section-title { font-size: 2.8rem; letter-spacing: 3px; }
 
-      .prizes-grid {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .prize-card.gold {
-        transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty));
-      }
+      .prizes-grid { flex-direction: column; align-items: center; }
+      .prize-card.gold { transform: perspective(900px) rotateX(var(--tx)) rotateY(var(--ty)); }
 
       .timeline-item { gap: 22px; margin-bottom: 36px; }
       .reg-form-wrap { padding: 40px 28px; }
       .submit-btn { letter-spacing: 2px; }
-
       .timeline-line { display: none; }
 
       .timeline-item,
-      .timeline-item:nth-child(even) {
-        flex-direction: column;
-      }
+      .timeline-item:nth-child(even) { flex-direction: column; }
 
       .timeline-dot { display: none; }
     }
@@ -1338,18 +1320,9 @@
     @media (max-width: 600px) {
 
       /* --- NAV --- */
-      nav {
-        padding: 12px 14px;
-      }
-
-      .nav-links {
-        display: none !important;
-      }
-
-      .nav-logo {
-        font-size: 1.35rem;
-        letter-spacing: 1.5px;
-      }
+      nav { padding: 12px 14px; }
+      .nav-links { display: none !important; }
+      .nav-logo { font-size: 1.35rem; letter-spacing: 1.5px; }
 
       nav .btn-primary {
         font-size: 0.58rem !important;
@@ -1357,96 +1330,82 @@
         letter-spacing: 1px;
       }
 
-      /* --- HERO: proper centered column --- */
+      /* --- HERO: hero-inner column, guaranteed text-above-image --- */
       #hero {
         min-height: 100svh;
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        padding: 0 16px 32px;
-        gap: 0;
+        padding: 0;
         overflow: hidden;
       }
 
-      .hero-content {
-        padding-top: 56px; /* just clear the fixed nav */
+      .hero-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
         width: 100%;
-        max-width: 100%;
+        padding: 76px 16px 32px;
+        position: relative;
+        z-index: 3;
+      }
+
+      .hero-content {
+        width: 100%;
+        padding-top: 0;
         text-align: center;
         position: relative;
         z-index: 3;
-        order: 1;
-        flex-shrink: 0;
       }
 
-      /* Mobile Spider-Man always shows below text on phone */
+      /* Spider-Man image: static flow, always below text */
       .hero-mobile-img {
         display: block !important;
-        order: 2;
-        width: 78%;
-        max-width: 260px;
-        margin: 20px auto 0;
-        filter: drop-shadow(0 0 28px rgba(230, 57, 70, 0.75));
+        position: static !important;
+        width: 75%;
+        max-width: 240px;
+        margin: 16px auto 0;
+        filter: drop-shadow(0 0 26px rgba(230, 57, 70, 0.8));
         animation: floatMobile 6s ease-in-out infinite;
-        position: relative;
-        z-index: 2;
-        flex-shrink: 0;
       }
 
-      .orb-a { width: 120px; height: 120px; }
-      .orb-b { width: 140px; height: 140px; }
+      /* Orbs: reduce size so they don't eat into layout */
+      .orb-a { width: 100px; height: 100px; }
+      .orb-b { width: 120px; height: 120px; }
 
-      .devhive-tag {
-        font-size: 0.6rem;
-        letter-spacing: 2.5px;
-        margin-bottom: 12px;
-      }
+      .devhive-tag { font-size: 0.6rem; letter-spacing: 2.5px; margin-bottom: 10px; }
 
       .hero-title {
-        font-size: clamp(3rem, 17vw, 4.6rem);
+        font-size: clamp(2.8rem, 16vw, 4.4rem);
         letter-spacing: 1.8px;
         line-height: 0.95;
       }
 
-      .hero-sub {
-        font-size: 0.75rem;
-        letter-spacing: 2.2px;
-        margin: 10px 0 6px;
-      }
-
+      .hero-sub { font-size: 0.75rem; letter-spacing: 2.2px; margin: 10px 0 6px; }
       .hero-hr { margin: 10px auto; }
 
-      .venue-text {
-        font-size: 0.78rem;
-        letter-spacing: 1px;
-        margin: 6px 0 20px;
-      }
+      .venue-text { font-size: 0.78rem; letter-spacing: 1px; margin: 6px 0 18px; }
 
       .hero-btns {
         flex-direction: row;
-        align-items: stretch;
         gap: 10px;
         justify-content: center;
         flex-wrap: wrap;
       }
 
-      .btn-primary,
-      .btn-secondary {
+      .btn-primary, .btn-secondary {
         font-size: 0.68rem;
         letter-spacing: 1.2px;
-        padding: 13px 20px;
+        padding: 12px 18px;
       }
 
       /* --- SECTIONS --- */
-      #countdown, #about, #tracks, #prizes, #register, #timeline {
-        padding: 48px 14px;
-      }
+      #countdown, #about, #tracks, #prizes, #register, #timeline { padding: 48px 14px; }
 
       .section-title { font-size: 2.1rem; letter-spacing: 2px; }
       .section-sub { letter-spacing: 1.4px; margin-bottom: 34px; }
 
-      /* 2-col grid for countdown on small screens */
       .countdown-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1454,21 +1413,13 @@
       }
 
       .countdown-item { width: 100%; }
-
-      .countdown-box {
-        width: 100%;
-        max-width: 130px;
-        margin: 0 auto;
-      }
-
+      .countdown-box { width: 100%; max-width: 130px; margin: 0 auto; }
       .countdown-num { font-size: clamp(2.7rem, 11vw, 3.2rem); }
       .countdown-label { letter-spacing: 2px; }
 
       .about-text h2 { font-size: 2.6rem; margin-bottom: 18px; }
       .about-text p { font-size: 1rem; line-height: 1.7; }
-
       .stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-
       .about-visual { display: none; }
 
       .tracks-grid { grid-template-columns: 1fr; }
@@ -1478,23 +1429,16 @@
       .timeline-content { padding: 18px 16px; }
 
       .timeline-item.reveal-left,
-      .timeline-item.reveal-right {
-        transform: translate3d(0, 32px, 0) scale(0.98);
-      }
+      .timeline-item.reveal-right { transform: translate3d(0, 32px, 0) scale(0.98); }
 
-      .prize-card {
-        width: 100%;
-        min-width: 0;
-        padding: 38px 20px;
-      }
+      .prize-card { width: 100%; min-width: 0; padding: 38px 20px; }
 
       .form-title { font-size: 2.2rem; letter-spacing: 2.5px; }
       .form-subtitle { font-size: 0.72rem; letter-spacing: 1.2px; margin-bottom: 28px; }
       .reg-form-wrap { padding: 26px 14px; }
       .form-group { margin-bottom: 20px; }
       .form-group label { font-size: 0.64rem; letter-spacing: 2px; }
-      .form-group input,
-      .form-group select { padding: 14px 12px; font-size: 0.95rem; }
+      .form-group input, .form-group select { padding: 14px 12px; font-size: 0.95rem; }
       .team-size-btns { gap: 8px; }
       .size-btn { padding: 12px 8px; font-size: 1rem; }
       .submit-btn { padding: 15px; font-size: 0.83rem; letter-spacing: 1.3px; }
@@ -1544,11 +1488,11 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-bg" data-parallax="0.12"></div>
-    <div class="parallax-orb orb-a" data-parallax="0.2"></div>
-    <div class="parallax-orb orb-b" data-parallax="0.16"></div>
+    <div class="hero-bg"></div>
+    <div class="parallax-orb orb-a"></div>
+    <div class="parallax-orb orb-b"></div>
 
-    <!-- Desktop 3D Spider Emblem -->
+    <!-- Desktop 3D Spider Emblem (hidden on mobile via CSS) -->
     <div class="spider-emblem">
       <div class="spider-3d">
         <div class="spider-svg-wrap">
@@ -1558,22 +1502,25 @@
       </div>
     </div>
 
-    <!-- Hero text content -->
-    <div class="hero-content motion-3d">
-      <div class="devhive-tag">DevHive Club Presents</div>
-      <h1 class="hero-title glitch" data-text="CYPHERVERSE">CYPHERVERSE</h1>
-      <div class="hero-sub">24-HOUR HACKATHON</div>
-      <div class="hero-hr"><span>◈</span></div>
-      <div class="venue-text">Venue: <span>CGC University, Mohali</span></div>
-      <div class="hero-btns">
-        <a href="#register" class="btn-primary cta-beat">Register Now</a>
-        <a href="#about" class="btn-secondary">Learn More</a>
+    <!-- hero-inner: on desktop this is just the text block centred.
+         On mobile it becomes a vertical stack: text on top, image below. -->
+    <div class="hero-inner">
+      <div class="hero-content motion-3d">
+        <div class="devhive-tag">DevHive Club Presents</div>
+        <h1 class="hero-title glitch" data-text="CYPHERVERSE">CYPHERVERSE</h1>
+        <div class="hero-sub">24-HOUR HACKATHON</div>
+        <div class="hero-hr"><span>◈</span></div>
+        <div class="venue-text">Venue: <span>CGC University, Mohali</span></div>
+        <div class="hero-btns">
+          <a href="#register" class="btn-primary cta-beat">Register Now</a>
+          <a href="#about" class="btn-secondary">Learn More</a>
+        </div>
       </div>
-    </div>
 
-    <!-- Mobile-only Spider-Man (rendered AFTER hero-content in DOM for natural stacking) -->
-    <img src="Miles_Morales_fanart___Spider-Man-removebg-preview.png" alt="Spider-Man" class="hero-mobile-img"
-      loading="eager" decoding="async" />
+      <!-- Mobile Spider-Man — lives INSIDE hero-inner so it flows below text naturally -->
+      <img src="Miles_Morales_fanart___Spider-Man-removebg-preview.png" alt="Spider-Man" class="hero-mobile-img"
+        loading="eager" decoding="async" />
+    </div>
   </section>
 
   <!-- COUNTDOWN -->
