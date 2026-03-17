@@ -127,6 +127,42 @@
       opacity: 0.12;
     }
 
+    /* ===================== SPIN BUTTON ===================== */
+    .btn-spin {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 22px;
+      background: transparent;
+      color: var(--light-blue);
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 1px solid var(--light-blue);
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .btn-spin:hover {
+      background: rgba(69,123,157,0.15);
+      border-color: #64b5f6;
+      color: #64b5f6;
+      box-shadow: 0 0 18px rgba(69,123,157,0.45);
+      transform: translateY(-2px);
+    }
+    .btn-spin .spin-icon {
+      display: inline-block;
+      animation: spinIcon 2.2s linear infinite;
+      font-style: normal;
+    }
+    @keyframes spinIcon {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
     /* ===================== NAVBAR ===================== */
     nav {
       position: fixed;
@@ -1330,6 +1366,13 @@
         letter-spacing: 1px;
       }
 
+      nav .btn-spin {
+        font-size: 0.52rem !important;
+        padding: 8px 12px !important;
+        letter-spacing: 1px;
+        gap: 5px;
+      }
+
       /* --- HERO: hero-inner column, guaranteed text-above-image --- */
       #hero {
         min-height: 100svh;
@@ -1483,7 +1526,12 @@
       <li><a href="#prizes">Prizes</a></li>
       <li><a href="#register">Register</a></li>
     </ul>
-    <a href="#register" class="btn-primary cta-beat" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="https://randomaddon.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn-spin">
+        <i class="spin-icon">✦</i> Spin
+      </a>
+      <a href="#register" class="btn-primary cta-beat" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
+    </div>
   </nav>
 
   <!-- HERO -->
