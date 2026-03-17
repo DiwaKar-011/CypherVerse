@@ -1899,20 +1899,33 @@
     }
     setInterval(createParticle, isPhone ? 700 : 300);
 
-    // COUNTDOWN
-    const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    // COUNTDOWN — Target: April 4, 2026 00:00:00 IST (UTC+5:30)
+    const targetDate = new Date('2026-04-04T00:00:00+05:30');
+    const cdEls = {
+      days:  document.getElementById('cd-days'),
+      hours: document.getElementById('cd-hours'),
+      mins:  document.getElementById('cd-mins'),
+      secs:  document.getElementById('cd-secs')
+    };
     function updateCountdown() {
-      const now = new Date();
-      const diff = targetDate - now;
-      if (diff <= 0) return;
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
-      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
-      document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+      const diff = targetDate - Date.now();
+      if (diff <= 0) {
+        // Hackathon is LIVE — flash "LIVE" across the boxes
+        cdEls.days.textContent  = 'LI';
+        cdEls.hours.textContent = 'VE';
+        cdEls.mins.textContent  = '🕷';
+        cdEls.secs.textContent  = '🕷';
+        Object.values(cdEls).forEach(el => {
+          el.style.color = '#ff2d55';
+          el.style.textShadow = '0 0 30px rgba(255,45,85,1)';
+          el.style.animation = 'pulseLoader 1s ease-in-out infinite';
+        });
+        return;
+      }
+      cdEls.days.textContent  = String(Math.floor(diff / 86400000)).padStart(2, '0');
+      cdEls.hours.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+      cdEls.mins.textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      cdEls.secs.textContent  = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
