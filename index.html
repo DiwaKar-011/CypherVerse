@@ -127,42 +127,6 @@
       opacity: 0.12;
     }
 
-    /* ===================== SPIN BUTTON ===================== */
-    .btn-spin {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 10px 22px;
-      background: transparent;
-      color: var(--light-blue);
-      font-family: 'Orbitron', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-decoration: none;
-      text-transform: uppercase;
-      border: 1px solid var(--light-blue);
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-    .btn-spin:hover {
-      background: rgba(69,123,157,0.15);
-      border-color: #64b5f6;
-      color: #64b5f6;
-      box-shadow: 0 0 18px rgba(69,123,157,0.45);
-      transform: translateY(-2px);
-    }
-    .btn-spin .spin-icon {
-      display: inline-block;
-      animation: spinIcon 2.2s linear infinite;
-      font-style: normal;
-    }
-    @keyframes spinIcon {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
     /* ===================== NAVBAR ===================== */
     nav {
       position: fixed;
@@ -270,7 +234,7 @@
       background: radial-gradient(circle at 40% 40%, rgba(69, 123, 157, 0.28), rgba(69, 123, 157, 0.04) 70%);
     }
 
-    /* 3D SPIDER EMBLEM — desktop only */
+    /* 3D SPIDER EMBLEM — desktop only (hidden below 1100px) */
     .spider-emblem {
       position: absolute;
       right: 8%;
@@ -279,6 +243,12 @@
       width: 380px;
       height: 380px;
       animation: floatDesktop 6s ease-in-out infinite;
+    }
+
+    /* Hide spider emblem and nav links on all non-desktop screens */
+    @media (max-width: 1100px) {
+      .spider-emblem { display: none !important; }
+      .nav-links { display: none !important; }
     }
 
     @keyframes floatDesktop {
@@ -1257,9 +1227,9 @@
     }
 
     /* =====================================================
-       TABLET — max 900px
+       TABLET/MOBILE — max 1100px
     ===================================================== */
-    @media (max-width: 900px) {
+    @media (max-width: 1100px) {
 
       /* --- NAV --- */
       nav { padding: 14px 20px; }
@@ -1283,7 +1253,7 @@
         align-items: center;
         justify-content: flex-start;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         padding: 90px 24px 40px;
         position: relative;
         z-index: 3;
@@ -1305,9 +1275,9 @@
       .hero-mobile-img {
         display: block !important;
         position: static !important;
-        width: 68%;
-        max-width: 280px;
-        margin: 16px auto 0;
+        width: 60%;
+        max-width: 320px;
+        margin: 20px auto 0;
         filter: drop-shadow(0 0 28px rgba(230, 57, 70, 0.75));
         animation: floatMobile 6s ease-in-out infinite;
       }
@@ -1351,9 +1321,9 @@
     }
 
     /* =====================================================
-       PHONE — max 600px
+       PHONE — max 768px
     ===================================================== */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
 
       /* --- NAV --- */
       nav { padding: 12px 14px; }
@@ -1364,13 +1334,6 @@
         font-size: 0.58rem !important;
         padding: 10px 14px !important;
         letter-spacing: 1px;
-      }
-
-      nav .btn-spin {
-        font-size: 0.52rem !important;
-        padding: 8px 12px !important;
-        letter-spacing: 1px;
-        gap: 5px;
       }
 
       /* --- HERO: hero-inner column, guaranteed text-above-image --- */
@@ -1526,12 +1489,7 @@
       <li><a href="#prizes">Prizes</a></li>
       <li><a href="#register">Register</a></li>
     </ul>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a href="https://randomaddon.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn-spin">
-        <i class="spin-icon">✦</i> Spin
-      </a>
-      <a href="#register" class="btn-primary cta-beat" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
-    </div>
+    <a href="#register" class="btn-primary cta-beat" style="font-size:0.7rem; padding:12px 28px;">Register Now</a>
   </nav>
 
   <!-- HERO -->
@@ -1677,7 +1635,7 @@
 
     <div class="timeline-item reveal reveal-left">
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 1 — 09:00 AM</div>
+        <div class="timeline-time">Day 1 — 08:00 AM -10:00 AM</div>
         <h3>Registrations & Check-In</h3>
         <p>Teams arrive, register on-site, collect kits and get ready to enter the CypherVerse.</p>
       </div>
@@ -1689,15 +1647,15 @@
       <div class="timeline-spacer"></div>
       <div class="timeline-dot"></div>
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 1 — 10:00 AM</div>
-        <h3>Opening Ceremony</h3>
-        <p>Welcome address by DevHive Club, track announcements, and problem statement reveal. Let the chaos begin.</p>
+        <div class="timeline-time">Day 1 — 10:00 AM - 11:30 AM</div>
+        <h3>Audi</h3>
+        <p>Auditorium</p>
       </div>
     </div>
 
     <div class="timeline-item reveal reveal-left">
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 1 — 11:00 AM</div>
+        <div class="timeline-time">Day 1 — 12:00 PM</div>
         <h3>Hacking Begins 🚀</h3>
         <p>The 24-hour countdown starts. Teams dive into building their ideas from scratch.</p>
       </div>
@@ -1709,7 +1667,7 @@
       <div class="timeline-spacer"></div>
       <div class="timeline-dot"></div>
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 1 — 02:00 PM</div>
+        <div class="timeline-time">Day 1 — 06:00 PM - 08:00 PM</div>
         <h3>Mentor Sessions</h3>
         <p>Industry mentors circulate to guide teams, offer feedback, and help unblock creative challenges.</p>
       </div>
@@ -1717,9 +1675,9 @@
 
     <div class="timeline-item reveal reveal-left">
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 1 — 08:00 PM</div>
-        <h3>Mid-Night Check-In</h3>
-        <p>Mid-hack review, pizza, energy boosters, and mini-challenges to keep the energy alive.</p>
+        <div class="timeline-time">Day 1 — 08:00 PM - 09:00 PM</div>
+        <h3>Dinner</h3>
+        <p>Mid night meal for all participants.</p>
       </div>
       <div class="timeline-dot"></div>
       <div class="timeline-spacer"></div>
@@ -1729,17 +1687,17 @@
       <div class="timeline-spacer"></div>
       <div class="timeline-dot"></div>
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 2 — 10:00 AM</div>
-        <h3>Submission Deadline</h3>
-        <p>All projects must be submitted. Final 60 minutes of polishing, demos, and presentations prep.</p>
+        <div class="timeline-time">Day 1 — 9:15 PM</div>
+        <h3>Check-In</h3>
+        <p>Check-In to the respective labs.</p>
       </div>
     </div>
 
     <div class="timeline-item reveal reveal-left">
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 2 — 11:00 AM</div>
-        <h3>Judging & Demos</h3>
-        <p>Teams present their builds to the panel. Live demos, Q&A, and the ultimate showdown begins.</p>
+        <div class="timeline-time">Day 1 — 11:00 AM</div>
+        <h3>Audi Session</h3>
+        <p>Chill Time..</p>
       </div>
       <div class="timeline-dot"></div>
       <div class="timeline-spacer"></div>
@@ -1749,11 +1707,29 @@
       <div class="timeline-spacer"></div>
       <div class="timeline-dot"></div>
       <div class="timeline-content tilt-card">
-        <div class="timeline-time">Day 2 — 02:00 PM</div>
-        <h3>Closing & Prize Distribution 🏆</h3>
-        <p>Winners announced, prizes distributed, and the CypherVerse champions are crowned forever.</p>
+        <div class="timeline-time">Day 2 — 06:00 AM - 08:00 AM</div>
+        <h3>Round 2 Mentor Sessions </h3>
+        <p>Prepare for the final round of competitions.</p>
       </div>
     </div>
+    <div class="timeline-item reveal reveal-left">
+      <div class="timeline-content tilt-card">
+        <div class="timeline-time">Day 2 — 08:00 AM - 09:30 AM</div>
+        <h3>BreakFast</h3>
+        <p>Breakfast time...</p>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-spacer"></div>
+    </div>
+
+     <div class="timeline-item reveal reveal-right">
+      <div class="timeline-spacer"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-content tilt-card">
+        <div class="timeline-time">Day 2 — 10:00 AM - 01:00 PM</div>
+        <h3>Announcement Judging Round  </h3>
+        <p>Teams prepare for final presentations.</p>
+      </div>
   </section>
 
   <!-- PRIZES -->
@@ -1865,7 +1841,7 @@
     // WEB CANVAS
     const canvas = document.getElementById('webCanvas');
     const ctx = canvas.getContext('2d');
-    const isPhone = window.matchMedia('(max-width: 600px)').matches;
+    const isPhone = window.matchMedia('(max-width: 768px)').matches;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const parallaxIntensity = isPhone ? 0.9 : 1.28;
@@ -1947,33 +1923,20 @@
     }
     setInterval(createParticle, isPhone ? 700 : 300);
 
-    // COUNTDOWN — Target: April 4, 2026 00:00:00 IST (UTC+5:30)
-    const targetDate = new Date('2026-04-04T00:00:00+05:30');
-    const cdEls = {
-      days:  document.getElementById('cd-days'),
-      hours: document.getElementById('cd-hours'),
-      mins:  document.getElementById('cd-mins'),
-      secs:  document.getElementById('cd-secs')
-    };
+    // COUNTDOWN
+    const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     function updateCountdown() {
-      const diff = targetDate - Date.now();
-      if (diff <= 0) {
-        // Hackathon is LIVE — flash "LIVE" across the boxes
-        cdEls.days.textContent  = 'LI';
-        cdEls.hours.textContent = 'VE';
-        cdEls.mins.textContent  = '🕷';
-        cdEls.secs.textContent  = '🕷';
-        Object.values(cdEls).forEach(el => {
-          el.style.color = '#ff2d55';
-          el.style.textShadow = '0 0 30px rgba(255,45,85,1)';
-          el.style.animation = 'pulseLoader 1s ease-in-out infinite';
-        });
-        return;
-      }
-      cdEls.days.textContent  = String(Math.floor(diff / 86400000)).padStart(2, '0');
-      cdEls.hours.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
-      cdEls.mins.textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-      cdEls.secs.textContent  = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      const now = new Date();
+      const diff = targetDate - now;
+      if (diff <= 0) return;
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
